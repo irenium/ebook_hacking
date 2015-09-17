@@ -49,29 +49,35 @@ def get_html_files(epub_book):
             result_list.append(epub_file)
     return result_list
     
-
 book = epub.read_epub('01.epub')
 html_files = get_html_files(book)
 html_files = sort_html_files(html_files)
 
-x = html_files[4]
 # x.content is full file contents
 # x.get_body_content() returns the contents of the <body> tag
 
 # html = #the HTML code you've written above
-parsed_html = BeautifulSoup(x.content)
-html_text = parsed_html.getText('\n')
 
-tokens = nltk.word_tokenize(html_text)
+def combine_html_files(html_files): 
+    combined_text=''
+    for index in range(len(html_files)):
+        parsed_html = BeautifulSoup(html_files[index].content)
+        html_text = parsed_html.getText('\n')
+        combined_text = combined_text + html_text
+    return combined_text
 
-def track_harry(list_of_tokens):
+def track_person(list_of_tokens,person):
     """Given a list of tokens, returns the index for the word Harry"""
-    harry_indices=[]
+    person_indices=[]
     for index in range(len(list_of_tokens)):
-        if list_of_tokens[index] == 'Harry':
-            harry_indices.append(index)
-    return harry_indices
+        if list_of_tokens[index] == person:
+            person_indices.append(index)
+    return person_indices
     
-            
+booktext = combine_html_files(html_files)
+tokens = nltk.word_tokenize(booktext)
+
+
+   
         
 
