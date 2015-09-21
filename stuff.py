@@ -2,6 +2,8 @@ from ebooklib import epub
 from BeautifulSoup import BeautifulSoup
 import nltk
 import re
+import matplotlib.pyplot as plt
+import numpy as np
 
 #------------- IRENE: SHIELD YOUR EYES ------------------
 RE_PART_SPLIT = re.compile(r'OEBPS/part(\d+)_split_(\d+).xhtml')
@@ -49,14 +51,8 @@ def get_html_files(epub_book):
             result_list.append(epub_file)
     return result_list
     
-book = epub.read_epub('01.epub')
-html_files = get_html_files(book)
-html_files = sort_html_files(html_files)
-
 # x.content is full file contents
 # x.get_body_content() returns the contents of the <body> tag
-
-# html = #the HTML code you've written above
 
 def combine_html_files(html_files): 
     combined_text=''
@@ -67,17 +63,23 @@ def combine_html_files(html_files):
     return combined_text
 
 def track_person(list_of_tokens,person):
-    """Given a list of tokens, returns the index for the word Harry"""
+    """Given a list of tokens, returns index for the character of interest"""
     person_indices=[]
     for index in range(len(list_of_tokens)):
         if list_of_tokens[index] == person:
             person_indices.append(index)
-    return person_indices
+    return person_indices   
     
+book = epub.read_epub('01.epub')
+html_files = get_html_files(book)
+html_files = sort_html_files(html_files)    
 booktext = combine_html_files(html_files)
 tokens = nltk.word_tokenize(booktext)
 
-
+#x = range(len(tokens))
+y = track_person(tokens, 'Harry')
+plt.plot(x,y)
+plt.show()
    
         
 
