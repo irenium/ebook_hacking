@@ -65,21 +65,45 @@ def combine_html_files(html_files):
 def track_person(list_of_tokens,person):
     """Given a list of tokens, returns index for the character of interest"""
     person_indices=[]
+    occurrence = 0    
     for index in range(len(list_of_tokens)):
         if list_of_tokens[index] == person:
             person_indices.append(index)
-    return person_indices   
-    
+            occurrence = occurrence + 1
+    return [person_indices, occurrence]  
+
+######################################
 book = epub.read_epub('01.epub')
 html_files = get_html_files(book)
 html_files = sort_html_files(html_files)    
 booktext = combine_html_files(html_files)
 tokens = nltk.word_tokenize(booktext)
+######################################
 
-#x = range(len(tokens))
-y = track_person(tokens, 'Harry')
-plt.plot(x,y)
+def character_plot(character_list):
+    """Given a list of person_indices, plots no. of mentions per book"""
+    book = epub.read_epub('01.epub')
+    html_files = get_html_files(book)
+    html_files = sort_html_files(html_files)    
+    booktext = combine_html_files(html_files)
+    tokens = nltk.word_tokenize(booktext)
+    character_count = [0,0,0,0,0]
+    
+    for i in range(len(character_list)):
+        character_count[i] = track_person(tokens, character_list[i])[1]
+    return character_count
+
+chars_test = ['Harry', 'Ron', 'Hermione', 'Snape', 'Dumbledore']    
+print character_plot(chars_test)  
+plt.bar([1,2,3,4,5], character_plot(chars_test), width=1)   
+ax1=plt.gca()
+ax1.set_xticks([1,2,3,4,5])
+ax1.set_xticklabels(chars_test)
+ 
+# x = track_person(tokens, 'Harry')[0]
+# y = [1 for i in range(len(x))]
+# plt.scatter(x,y)
 plt.show()
-   
-        
+
+
 
