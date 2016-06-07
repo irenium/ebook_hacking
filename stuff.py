@@ -4,6 +4,7 @@ import nltk
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import csv
 
 #------------- IRENE: SHIELD YOUR EYES ------------------
 RE_PART_SPLIT = re.compile(r'OEBPS/part(\d+)_split_(\d+).xhtml')
@@ -72,14 +73,6 @@ def track_person(list_of_tokens,person):
             occurrence = occurrence + 1
     return [person_indices, occurrence]  
 
-######################################
-book = epub.read_epub('01.epub')
-html_files = get_html_files(book)
-html_files = sort_html_files(html_files)    
-booktext = combine_html_files(html_files)
-tokens = nltk.word_tokenize(booktext)
-######################################
-
 def character_plot(character_list):
     """Given a list of person_indices, plots no. of mentions per book"""
     book = epub.read_epub('01.epub')
@@ -87,19 +80,41 @@ def character_plot(character_list):
     html_files = sort_html_files(html_files)    
     booktext = combine_html_files(html_files)
     tokens = nltk.word_tokenize(booktext)
-    character_count = [0,0,0,0,0]
+    character_count = [0]*len(character_list)
     
     for i in range(len(character_list)):
         character_count[i] = track_person(tokens, character_list[i])[1]
     return character_count
 
-chars_test = ['Harry', 'Ron', 'Hermione', 'Snape', 'Dumbledore']    
-print character_plot(chars_test)  
-plt.bar([1,2,3,4,5], character_plot(chars_test), width=1)   
+def names_list(csv_file):
+    """ Given a csv file of characters, organizes a list of names"""
+    charfile  = open(csv_file, "rb")
+    reader = csv.reader(charfile)
+    firstnames=[]
+    lastnames=[]
+    for row in reader:
+        if not row:
+            continue
+        firstnames.append(row[0])
+        if len(row) < 2:
+            lastnames.append('')
+        else:
+            lastnames.append(row[1])
+
+    charfile.close() 
+    print firstnames
+    print lastnames
+    return firstnames
+
+chars_list = names_list('chars_test.csv') 
+print character_plot(chars_list)  
+plt.bar(range(1,len(chars_list)+1), character_plot(chars_list), width=1)   
 ax1=plt.gca()
-ax1.set_xticks([1,2,3,4,5])
-ax1.set_xticklabels(chars_test)
- 
+ax1.set_xticks(range(1,len(chars_list)+1))
+ax1.set_xticklabels(chars_list)
+
+
+    
 # x = track_person(tokens, 'Harry')[0]
 # y = [1 for i in range(len(x))]
 # plt.scatter(x,y)
