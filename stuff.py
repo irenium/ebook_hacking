@@ -63,58 +63,52 @@ def combine_html_files(html_files):
         combined_text = combined_text + html_text
     return combined_text
 
-def track_person(list_of_tokens,person):
-    """Given a list of tokens, returns index for the character of interest"""
-    person_indices=[]
-    occurrence = 0    
-    for index in range(len(list_of_tokens)):
-        if list_of_tokens[index] == person:
-            person_indices.append(index)
-            occurrence = occurrence + 1
-    return [person_indices, occurrence]  
-
-def character_plot(character_list):
-    """Given a list of person_indices, plots no. of mentions per book"""
-    book = epub.read_epub('01.epub')
-    html_files = get_html_files(book)
-    html_files = sort_html_files(html_files)    
-    booktext = combine_html_files(html_files)
-    tokens = nltk.word_tokenize(booktext)
-    character_count = [0]*len(character_list)
-    
-    for i in range(len(character_list)):
-        character_count[i] = track_person(tokens, character_list[i])[1]
-    return character_count
-
 def names_list(csv_file):
     """ Given a csv file of characters, organizes a list of names"""
     charfile  = open(csv_file, "rb")
     reader = csv.reader(charfile)
     firstnames=[]
-    lastnames=[]
+    names=[]
     for row in reader:
         if not row:
             continue
         firstnames.append(row[0])
-        if len(row) < 2:
-            lastnames.append('')
-        else:
-            lastnames.append(row[1])
-
+        names.append(row)
+        for i in range(len(firstnames)):
+            firstnames[i] = firstnames[i].strip()
+            for j in range(len(names[i])):
+                names[i][j] = names[i][j].strip()
     charfile.close() 
-    print firstnames
-    print lastnames
-    return firstnames
-
-chars_list = names_list('chars_test.csv') 
-print character_plot(chars_list)  
-plt.bar(range(1,len(chars_list)+1), character_plot(chars_list), width=1)   
-ax1=plt.gca()
-ax1.set_xticks(range(1,len(chars_list)+1))
-ax1.set_xticklabels(chars_list)
-
-
+    return [names, firstnames]
     
+def track_person(list_of_tokens,persons):
+    """Given a list of tokens, returns index for the character of interest"""
+    person_indices=[] #this list is if you want the index for each occurrence
+    occurrence = [0]*len(persons)    
+    for row in range(len(persons)):
+        for i in range(len(persons[row])):
+            for j in range(len(list_of_tokens)):
+                if list_of_tokens[j] == persons[row][i]:
+                    person_indices.append(j)
+                    occurrence[row] = occurrence[row] + 1
+    return [person_indices, occurrence]  
+
+book = epub.read_epub('01.epub')
+html_files = get_html_files(book)
+html_files = sort_html_files(html_files)    
+booktext = combine_html_files(html_files)
+tokens = nltk.word_tokenize(booktext)
+
+chars_list = names_list('chars_test.csv')[0]
+print chars_list
+x_label = names_list('chars_test.csv')[1]
+character_count = track_person(tokens, chars_list)[1]
+print character_count
+plt.bar(range(1,len(chars_list)+1), character_count, width=1)   
+ax1=plt.gca()
+ax1.set_xticks(range(1,len(x_label)+1))
+ax1.set_xticklabels(x_label)
+  
 # x = track_person(tokens, 'Harry')[0]
 # y = [1 for i in range(len(x))]
 # plt.scatter(x,y)
