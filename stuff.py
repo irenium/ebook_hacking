@@ -1,6 +1,7 @@
 from ebooklib import epub
 from BeautifulSoup import BeautifulSoup
 import nltk
+from nltk.tag import pos_tag
 import re
 import matplotlib.pyplot as plt
 #import plotly.plotly as py
@@ -9,34 +10,21 @@ import csv
 import sys
 
 #------------- IRENE: SHIELD YOUR EYES ------------------
-RE_PART_SPLIT = re.compile(r'OEBPS/part(\d+)_split_(\d+).xhtml')
-RE_PART = re.compile(r'OEBPS/part(\d+).xhtml')
-
-def get_sort_key(html_file):
-    """Given a filename in the form of OEBPS/partXXX_split_XXX.xhtml, extract
-       the part number and split number and return as a numeric tuple."""
-    file_name = html_file.file_name
-    match = RE_PART_SPLIT.search(file_name)
-    if match:
-        return (int(match.group(1)), int(match.group(2)))
-    
-    match = RE_PART.search(file_name)
-    if match:
-        return (int(match.group(1)), 0)
-    
-    print('Warning, failed to match: ' + file_name)
-    return None
-
 def is_matching(html_file):
     """Given a filename, return true if it matches the OEBPS/partXXX.xhtml or
        OEBPS/partXXX_split_XXX.xhtml patterns."""
     return get_sort_key(html_file) is not None
 
-def sort_html_files(html_files):
+def sort_html_files(html_files, toc):
     """Given a list of epub.EpubHtml objects, return a copy of that list where
        the files are sorted by filename."""
-    filtered_files = filter(is_matching, html_files)
-    return sorted(filtered_files, key=get_sort_key)
+    sorted_files=[]
+    for i in range(len(toc)):
+        for j in range(len(html_files)):
+            if toc[i].href == html_files[j].file_name:
+                sorted_files.append(html_files[j])
+    return sorted_files
+    
 #------------- IRENE: OK, YOU CAN LOOK NOW ---------------
 
 
@@ -68,7 +56,8 @@ def combine_html_files(html_files):
 def tokenize(epub_input):
     book = epub.read_epub(epub_input)
     html_files = get_html_files(book)
-    html_files = sort_html_files(html_files)   
+    toc = book.toc
+    html_files = sort_html_files(html_files, toc)   
     booktext = combine_html_files(html_files)
     tokens = nltk.word_tokenize(booktext)
     return tokens
@@ -80,6 +69,42 @@ def get_chapterindex(tokens):
         if tokens[i] == 'CHAPTER':
             chapter_indices.append(i)
     return chapter_indices    
+    
+def propernouns(tokens):
+    tagged_sent = pos_tag(tokens)
+    allpropernouns = [word for word,pos in tagged_sent if pos == 'NNP']
+    
+    # Stores a map of proper noun to number of occurances of that proper noun
+    noun_count = dict()
+    for word in allpropernouns:
+        if word in noun_count:
+            noun_count[word] += 1
+        else:
+            noun_count[word] = 1
+   
+    propernouns = []
+    noun_pairs = []
+    for word, count in noun_count.iteritems():
+        noun_pairs.append((count, word))
+        if count > 3:
+            propernouns.append(word)    
+            
+    noun_pairs = sorted(noun_pairs, reverse=True)
+    for count, word in noun_pairs:
+        print u'{:10s} {}'.format(word, count)
+    print 'There are {} proper nouns'.format(len(propernouns))
+
+#    for i in range(len(allpropernouns)):
+#        count = 0
+#        for j in range(len(allpropernouns)):
+#            if allpropernouns[i] == allpropernouns[j]:
+#                count = count + 1
+#            if count > 3:
+#                propernouns.append(allpropernouns[i])
+#    propernouns = list(set(propernouns))
+#    print propernouns
+#    print len(propernouns)
+    return propernouns
 
 def names_list(csv_file):
     """ Given a csv file of characters, organizes a list of names"""
@@ -102,11 +127,13 @@ def names_list(csv_file):
 def plot_names(persons, count):
     """Plots the number of times each character is mentioned (# vs name)"""
     # i'm not sure this function does anything critical to the rest of the script
-    x_label = names_list('hpchars.csv')[1]    
+    x_label = names_list('divergent_chars.csv')[1]    
     plt.bar(range(1,len(persons)+1), count, width=1)   
     ax1=plt.gca()
     ax1.set_xticks(range(1,len(x_label)+1))
     ax1.set_xticklabels(x_label, rotation=90)
+    plt.title('Harry Potter: Book 1', fontsize=20)
+    plt.ylabel('Number of Mentions', fontsize=18)
     plt.show()
     return 
     
@@ -124,8 +151,7 @@ def track_person(list_of_tokens, persons):
                     occurrence[row] = occurrence[row] + 1
     return occurrence  
 
-def mentions_per_chapter(list_of_tokens, persons):
-
+def mentions_per_chapter(list_of_tokens, persons, title):
     chapter_indices = get_chapterindex(list_of_tokens) 
     #chapter_indices = [1,3,5]
     person_indices = [list() for i in range(len(persons))] 
@@ -152,26 +178,36 @@ def mentions_per_chapter(list_of_tokens, persons):
     #plot the # of characters per chapter
     x_label = range(1,len(chapter_indices)+1,1) #chapters in book
     char_per_chapter = [0]*len(x_label)
+    main_chars = [0]*len(x_label)
+    main_chars2 = [0]*len(x_label)
     for row in range(len(num_per_chapter)):
         for i in range(len(num_per_chapter[row])):
             if num_per_chapter[row][i] == 0:
                 continue
             if num_per_chapter[row][i] != 0:
                 char_per_chapter[i] = char_per_chapter[i]+1
-                
-    plt.bar(range(1,len(char_per_chapter)+1), char_per_chapter, width=1)   
+            if num_per_chapter[row][i] > 2:
+                main_chars[i] = main_chars[i]+1
+            if num_per_chapter[row][i] > 19:
+                main_chars2[i] = main_chars2[i]+1
+                                                        
+    p1 = plt.bar(range(1,len(char_per_chapter)+1), char_per_chapter, width=1)  
+    p2 = plt.bar(range(1,len(char_per_chapter)+1), main_chars, width=1, 
+    color='r')    
+    p3 = plt.bar(range(1,len(char_per_chapter)+1), main_chars2, width=1, 
+    color='y')
     ax1=plt.gca()
     ax1.set_xticks(range(1,len(x_label)+1))
     ax1.set_xticklabels(x_label)
-    plt.title('Harry Potter: Book 1', fontsize=20)
+    plt.title(title, fontsize=20)
     plt.xlabel('Chapter Number', fontsize=18)
     plt.ylabel('Number of Characters per Chapter', fontsize=18)
     plt.show()
     return
 
-tokens = tokenize('01hp.epub') 
-chars_list = names_list('hpchars.csv')[0]
-mentions_per_chapter(tokens, chars_list)
+#tokens = tokenize('insurgent.epub') 
+#chars_list = names_list('divergent_chars.csv')[0]
+#mentions_per_chapter(tokens, chars_list)
 
 def count_mentions(persons, count):
     """Given a list of characters, and the number of times each character is
@@ -190,13 +226,13 @@ def count_mentions(persons, count):
                 y_count[j] = y_count[j]+1           
     return [x_label, y_count]
 
-def subplot_count(file_list):
+def subplot_count(file_list, csv_charfile):
     """Given a list of epubs, returns the # of mentions for each book"""
     x_label = range(50,1050,50)  
     tokens = [0]*len(file_list)
     character_count = [0]*len(file_list)
     y = [0]*len(file_list)
-    chars_list = names_list('hpchars.csv')[0]
+    chars_list = names_list(csv_charfile)[0]
     num_of_plots = len(file_list)
     f, ax = plt.subplots(num_of_plots, sharex=True, sharey=True)
     if num_of_plots == 1:
@@ -207,9 +243,10 @@ def subplot_count(file_list):
         y[i]= count_mentions(chars_list, character_count[i])[1]        
         ax[i].bar(range(1,len(x_label)+1), y[i], width=1)
    
-    ax[0].set_title('Harry Potter Characters by Book')    
+    ax[0].set_title('Number of Harry Potter Characters: Book 1')    
     ax[0].set_xticks(range(1,len(x_label)+1))
     ax[0].set_xticklabels(x_label)
+    plt.xlabel('Number of Mentions Per Book', fontsize=18)
     plt.show()  
     return y
 
@@ -235,10 +272,12 @@ def do_chapter_analysis():
     sys.exit(0) 
        
 # do_chapter_analysis()
-#tokens = tokenize('01hp.epub')  
+tokens = tokenize('01hp.epub')  
+#propernouns(tokens)
+chars_list = names_list('hpchars.csv')[0]
+mentions_per_chapter(tokens, chars_list, 'Harry Potter Book 1')
 #get_chapterindex(tokens)  
-#subplot_count(['01hp.epub'])
-#chars_list = names_list('hpchars.csv')[0]
+#subplot_count(['beyonders3.epub'],'beyonders_chars.csv')
 #character_count = track_person(tokens, chars_list)
 #plot_names(chars_list, character_count)
 
