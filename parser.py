@@ -36,7 +36,7 @@ def get_body_node(node):
       return child
   return None
 
-kInlineSet = set(['span', 'a', 'b', 'i', 'br', 'em', 'strong', 'samp'])
+kInlineSet = set(['span', 'a', 'b', 'i', 'br', 'em', 'strong', 'samp', 'ul', 'li', 'small'])
 kDeleteSet = set(['svg', 'table', 'hr', 'img', 'h1', 'h2', 'h3', 'blockquote', 'pagebreak', 'state', 'placename', 'placetype'])
 
 def get_short_tag(node):
@@ -83,7 +83,10 @@ def rewrite_div(node):
   return text + '\n'
 
 def parse_html(html_content):
-  root = ET.fromstring(html_content)
+  parser = ET.XMLParser()
+  parser.entity['nbsp'] = unichr(160)
+  parser.feed(html_content)
+  root = parser.close()
   body = get_body_node(root)
 
   text = ''
@@ -139,22 +142,30 @@ def get_text_from_html_files(html_files):
   return text_list
 
 
+def no_op():
+  return
 
 def parse_book(filename):
   """Combines above two functions into a single call."""
-  book = epub.read_epub(filename)
+  reader = epub.EpubReader(filename)
+  try:
+    book = reader.load()
+  except KeyError:
+    reader._load_metadata = no_op
+    book = reader.load()
+  reader.process()
   html_files = get_html_files_in_reading_order(book)
   return get_text_from_html_files(html_files)
 
 
 kChapterTests = dict(
   beyonders=[2+25, 3+28, 4+36],
-  brotherband=[1+44, 2+42, 1+47, 1+56, ], #1+51], 
-  divergent= [1+39, 1+47], # 1+56],
+  brotherband=[1+44, 2+42, 1+47, 1+56, 2+51], 
+  divergent= [1+39, 1+47, 2+56],
   fablehaven= [19, 21, 18-14, 15-11, 31+3, 39+2],
   harry_potter= [17, 18, 22, 37, 38, 30, 37],
-  # hunger_games= [27, 27, 28],
-  maze_runner=[1+62, ] #65, 73+1],
+  hunger_games= [27, 27, 1+28],
+  maze_runner=[1+62, 1+65, 73+1],
 )
 
 def run_tests():
