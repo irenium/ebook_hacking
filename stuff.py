@@ -9,6 +9,8 @@ import numpy as np
 import csv
 import sys
 
+from parser import parse_book
+
 #------------- IRENE: SHIELD YOUR EYES ------------------
 def is_matching(html_file):
     """Given a filename, return true if it matches the OEBPS/partXXX.xhtml or
@@ -54,6 +56,7 @@ def combine_html_files(html_files):
     return combined_text
     
 def tokenize(epub_input):
+
     book = epub.read_epub(epub_input)
     html_files = get_html_files(book)
     toc = book.toc
@@ -93,17 +96,6 @@ def propernouns(tokens):
     for count, word in noun_pairs:
         print u'{:10s} {}'.format(word, count)
     print 'There are {} proper nouns'.format(len(propernouns))
-
-#    for i in range(len(allpropernouns)):
-#        count = 0
-#        for j in range(len(allpropernouns)):
-#            if allpropernouns[i] == allpropernouns[j]:
-#                count = count + 1
-#            if count > 3:
-#                propernouns.append(allpropernouns[i])
-#    propernouns = list(set(propernouns))
-#    print propernouns
-#    print len(propernouns)
     return propernouns
 
 def names_list(csv_file):
@@ -141,19 +133,61 @@ def track_person(list_of_tokens, persons):
     """Given a list of tokens, returns # of times each character is mentioned 
     over the entire book"""
     
-    #person_indices=[] #this list is if you want the index for each occurrence
     occurrence = [0]*len(persons) 
     for row in range(len(persons)):
         for i in range(len(persons[row])):
             for j in range(len(list_of_tokens)):
                 if list_of_tokens[j] == persons[row][i]:
-                    #person_indices.append(j)
                     occurrence[row] = occurrence[row] + 1
     return occurrence  
 
+def mentions_per_chapter2(chapter_strings, persons, title):
+ 
+    chaptokens = []
+    for chap in chapter_strings:
+        chaptokens.append(nltk.word_tokenize(chap))
+        
+    num_per_chapter = [[0]*len(chaptokens) for i in range(len(persons))]          
+    for char in range(len(persons)):
+        for name in range(len(persons[char])):
+            for chap in range(len(chaptokens)):
+                for i in range(len(chaptokens[chap])):
+                    if chaptokens[chap][i] == persons[char][name]:
+                        num_per_chapter[char][chap] += 1
+
+    #plot the # of characters per chapter
+    x_label = range(1,len(chaptokens)+1,1) #chapters in book
+    char_per_chapter = [0]*len(x_label)
+    main_chars = [0]*len(x_label)
+    main_chars2 = [0]*len(x_label)
+    for row in range(len(num_per_chapter)):
+        for i in range(len(num_per_chapter[row])):
+            if num_per_chapter[row][i] == 0:
+                continue
+            if num_per_chapter[row][i] != 0:
+                char_per_chapter[i] = char_per_chapter[i]+1
+            if num_per_chapter[row][i] > 2:
+                main_chars[i] = main_chars[i]+1
+            if num_per_chapter[row][i] > 19:
+                main_chars2[i] = main_chars2[i]+1
+                                                        
+    p1 = plt.bar(range(1,len(char_per_chapter)+1), char_per_chapter, width=1)  
+    p2 = plt.bar(range(1,len(char_per_chapter)+1), main_chars, width=1, 
+    color='r')    
+    p3 = plt.bar(range(1,len(char_per_chapter)+1), main_chars2, width=1, 
+    color='y')
+    ax1=plt.gca()
+    ax1.set_xticks(range(1,len(x_label)+1))
+    ax1.set_xticklabels(x_label)
+    plt.title(title, fontsize=20)
+    plt.xlabel('Chapter Number', fontsize=18)
+    plt.ylabel('Number of Characters per Chapter', fontsize=18)
+    plt.ylim([0,70])
+    plt.show()
+    return                        
+    
 def mentions_per_chapter(list_of_tokens, persons, title):
     chapter_indices = get_chapterindex(list_of_tokens) 
-    #chapter_indices = [1,3,5]
     person_indices = [list() for i in range(len(persons))] 
 
     #start by getting the indices for the mentions over the entire book
@@ -204,10 +238,6 @@ def mentions_per_chapter(list_of_tokens, persons, title):
     plt.ylabel('Number of Characters per Chapter', fontsize=18)
     plt.show()
     return
-
-#tokens = tokenize('insurgent.epub') 
-#chars_list = names_list('divergent_chars.csv')[0]
-#mentions_per_chapter(tokens, chars_list)
 
 def count_mentions(persons, count):
     """Given a list of characters, and the number of times each character is
@@ -272,10 +302,12 @@ def do_chapter_analysis():
     sys.exit(0) 
        
 # do_chapter_analysis()
-tokens = tokenize('01hp.epub')  
+chapter_strings = parse_book('hungergames3.epub')
+#tokens = tokenize('hungergames3.epub')  
 #propernouns(tokens)
-chars_list = names_list('hpchars.csv')[0]
-mentions_per_chapter(tokens, chars_list, 'Harry Potter Book 1')
+chars_list = names_list('hungergames_chars.csv')[0]
+mentions_per_chapter2(chapter_strings, chars_list, 'Hunger Games: Book 3')
+#mentions_per_chapter(tokens, chars_list, 'Allegiant')
 #get_chapterindex(tokens)  
 #subplot_count(['beyonders3.epub'],'beyonders_chars.csv')
 #character_count = track_person(tokens, chars_list)
