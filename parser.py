@@ -37,7 +37,7 @@ def get_body_node(node):
   return None
 
 kInlineSet = set(['span', 'a', 'b', 'i', 'br', 'em', 'strong', 'samp'])
-kDeleteSet = set(['svg', 'table', 'hr', 'img', 'h1', 'h2', 'h3', 'blockquote', 'pagebreak'])
+kDeleteSet = set(['svg', 'table', 'hr', 'img', 'h1', 'h2', 'h3', 'blockquote', 'pagebreak', 'state', 'placename', 'placetype'])
 
 def get_short_tag(node):
   namespace_end = node.tag.find('}') + 1
@@ -149,9 +149,12 @@ def parse_book(filename):
 
 kChapterTests = dict(
   beyonders=[2+25, 3+28, 4+36],
-  brotherband=[1+44, 2+42, 1+47, 1+56], 
-  divergent= [1+39, 1+47],
-  harry_potter= [17, 18, 22, 37, 38, 30, 37]
+  brotherband=[1+44, 2+42, 1+47, 1+56, ], #1+51], 
+  divergent= [1+39, 1+47], # 1+56],
+  fablehaven= [19, 21, 18-14, 15-11, 31+3, 39+2],
+  harry_potter= [17, 18, 22, 37, 38, 30, 37],
+  # hunger_games= [27, 27, 28],
+  maze_runner=[1+62, ] #65, 73+1],
 )
 
 def run_tests():
@@ -170,3 +173,6 @@ def run_tests():
         .format(n_chapters_expected, filename, n_chapters_actual))
       print "{}: OK".format(filename)
 
+
+if __name__ == '__main__':
+  run_tests()
