@@ -12,7 +12,7 @@ How often do you hear someone asking "Have you read any good books lately?" Usua
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
 ### How do I get set up? ###
-
+![hungergames3.png](https://bitbucket.org/repo/Mx7pKn/images/848505291-hungergames3.png)
 * Summary of set up
 * Configuration
 * Dependencies
@@ -20,13 +20,10 @@ How often do you hear someone asking "Have you read any good books lately?" Usua
 * How to run tests
 * Deployment instructions
 
-### Contribution guidelines ###
+### Assumptions ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* When creating the character lists, I deleted last names to avoid double counting. The assumption here is that characters are usually referred to by one name more than the other.  This also helps to avoid confusion over shared family names.
 
-### Who do I talk to? ###
+### Future Work ###
 
-* Repo owner or admin
-* Other community or team contact
+* Add more books, including fiction outside the scope of "young adult."
