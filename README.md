@@ -1,6 +1,9 @@
-# README #
+# Using Data to Answer "What Makes a Good Story?" #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+##Background##
+How often do you hear someone asking "Have you read any good books lately?" Usually, the person asking this question has probably wasted hours of their life reading crappy books. When you login to amazon.com, you're given suggestions for what books you would like, based on the books you've already read. Unfortunately, their algorithm for finding interesting books seems to be limited to *I see you've read the Hunger Games ... here are some more Dystopian novels for you. Maybe you should try the Twilight series - it's also popular, young adult fiction.* Meh - not helpful. In reality, I like all sorts of books. I've read over 100 classic novels, and am a fan of Dostoyevsky, but I also enjoy reading Harry Potter and similar young adult fantasy. 
+
+##Hypothesis##
 
 ### What is this repository for? ###
 
