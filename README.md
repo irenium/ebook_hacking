@@ -13,6 +13,14 @@ I used Python to extract data from several electronic books (epubs) within the b
 ### Initial Approach ###
 I started to explore the data by first looking at the Harry Potter series. This choice was driven by the online availability of a full character list for these books.
 
+Next, I looked at how frequently characters were mentioned over an entire book, and what the distribution of "main" characters vs "minor" characters was. The plot below compares the first book in the Harry Potter series (top graph) to the last book in the series (bottom graph). As you can see, the series starts out with an obvious protagonist (Harry). He is mentioned over 1000 times in book 1. The top plot also shows that there are nearly 10 "minor" characters which are mentioned between 100-200x throughout the novel. By book 7, the number of characters mentioned in the book has grown by quite a lot. Harry is no longer the only character mentioned over 1000 times. In fact, there are a couple characters mentioned over 550 times, and nearly 25 "minor" characters who are mentioned only 100-150x. 
+
+![hp1_7subplot.png](https://bitbucket.org/repo/Mx7pKn/images/2061119558-hp1_7subplot.png)
+
+Compare how the Harry Potter series progresses to the Maze Runner series. As shown in the plot below, there is a main character that is mentioned over 1000 times throughout the novels. The number of main characters in this series actually shrinks as the series progresses. Unlike the Harry Potter series, where minor characters are increasingly developed into main characters, the Maze Runner series focuses on the protagonist alone and does not provide character depth to anyone else in the book. 
+
+![mazerunner1_3subplots.png](https://bitbucket.org/repo/Mx7pKn/images/625874408-mazerunner1_3subplots.png)
+
 ### Final Approach ###
 
 Before I looked at the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
