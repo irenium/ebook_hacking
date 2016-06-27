@@ -27,9 +27,9 @@ Already, the data is starting to reveal how character breadth and depth varies f
 
 ### Final Approach ###
 
-In order to understand character depth and character breadth in a given series of books, I refined my initial approach so that we could look at the number of characters in each chapter throughout a series. I already showed how different a Harry Potter book looks compared to a novel from the Maze Runner series. These last several plots show how character depth and breadth varies throughout different series, all written by different authors.
+In order to better understand character depth and breadth in a given series of books, I refined my initial approach so that I could look at the number of characters in each chapter throughout a series. I also refined the data by plotting separate bars based on the number of times each character was mentioned in the chapter. Specifically, the grey bars in the plots below show the total number of characters mentioned in each chapter (including very minor characters). The red bars filter out characters who were mentioned less than 3 times. The blue bars represent dominant characters in the chapter, and filter out characters who were mentioned less than 15 times. 
 
-Before I looked at the data from the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
+Before I looked at the data from the remaining epubs, I made a list of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
 
 * Harry Potter series by J.K. Rowling
 * Brotherband chronicles by John Flanagan tied with the Beyonders series by Brandon Mull
@@ -48,6 +48,8 @@ Notably, for each series, I tried to use the NLTK library to tag all proper pron
 ![hp5_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/2320447020-hp5_bychapter.png)
 ![hp6_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3254033752-hp6_bychapter.png)
 ![hp7_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3641079957-hp7_bychapter.png)
+
+Note that the Harry Potter books are all plotted up to a y-axis value of 70. I noticed that no other book that I analyzed had so many characters. The remaining plots are all shown with a max y-axis value of 30. 
 
 ![brotherband1.png](https://bitbucket.org/repo/Mx7pKn/images/3728856753-brotherband1.png)
 ![brotherband2.png](https://bitbucket.org/repo/Mx7pKn/images/1715254307-brotherband2.png)
@@ -70,13 +72,15 @@ Notably, for each series, I tried to use the NLTK library to tag all proper pron
 ![divergent3.png](https://bitbucket.org/repo/Mx7pKn/images/2637047517-divergent3.png)
 
 ## Conclusions ##
-The preliminary results show that 
+The preliminary results show that there are indeed some trends in the style of storytelling that I prefer. I like the Harry Potter books the most, and perhaps that means I enjoy novels with impressive character breadth. There are several reasonable explanations for why I might appreciate breadth. I may find that the Harry Potter books are closer to reality because I know a great deal more than 20 people. In fact, I interact with many people per day, and so the large number of characters present in the Harry Potter books agrees with how I feel people interact with others on regular basis. The Harry Potter books are not without character depth, however. There are apparent "dips" in the data, which occur more and more frequently as the series progresses. I think these dips represent chapters in which the author chooses to provide additional depth to new characters.
+
+The Beyonders and Brotherband books are actually pretty different. There isn't a lot of character "noise" in the Beyonders series, and the blue bars are relatively large compared to the grey bars. This shows me that the Beyonders series probably has a lot of character depth. The Brotherband books have a more even distribution of blue, red, and grey. Interestingly, the Divergent series (my least favorite books) have the smallest blue bars, indicating that the character depth may be lacking. I have made a lot of assumptions here, however, and this analysis could be improved.
 
 ## Assumptions ##
 
 * When creating the character lists, I deleted last names and prefaces such as "Professor" to avoid double counting. The assumption here is that characters are usually referred to by one name more than the other.  This also helps to avoid confusion over shared family names.
 * There is some error in creating the list of characters in a series. I ignored characters that were only mentioned < 5 times. 
-* There is a subtle assumption that chapter lengths are more or less similar across a particular book, or across different series. I describe this assumption as "subtle" only because I am *comparing* different series. 
+* There is a subtle assumption that chapter lengths are more or less similar across a particular book, and across different series. I describe this assumption as "subtle" only because I am *comparing* different series. For instance, the Maze Runner series has a lot more chapters than some of the other novels I analyzed. If the chapters are shorter, perhaps this means the cutoff for the blue and red bars should be different.
 
 ## Future Work ##
 
