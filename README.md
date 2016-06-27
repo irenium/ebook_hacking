@@ -10,10 +10,10 @@ Quantifying patterns in stories, including character breadth versus character de
 
 I used Python to extract data from several electronic books (epubs) within the broad category of "young adult fiction." I chose to focus on character patterns, and refined my approach as I continued to explore the results.
 
-# Initial Approach #
+### Initial Approach ###
 I started to explore the data by first looking at the Harry Potter series. This choice was driven by the online availability of a full character list for these books.
 
-# Final Approach #
+### Final Approach ###
 
 Before I looked at the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
 
@@ -34,7 +34,7 @@ The preliminary results show that
 
 ## Assumptions ##
 
-* When creating the character lists, I deleted last names to avoid double counting. The assumption here is that characters are usually referred to by one name more than the other.  This also helps to avoid confusion over shared family names.
+* When creating the character lists, I deleted last names and prefaces such as "Professor" to avoid double counting. The assumption here is that characters are usually referred to by one name more than the other.  This also helps to avoid confusion over shared family names.
 
 ## Future Work ##
 
