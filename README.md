@@ -26,16 +26,39 @@ Compare how the Harry Potter series progresses to the Maze Runner series. As sho
 Before I looked at the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
 
 * Harry Potter series by J.K. Rowling
-* Brotherband chronicles by John Flanagan
-* Beyonders series by Brandon Mull
+* Brotherband chronicles by John Flanagan tied with the Beyonders series by Brandon Mull
 * Hunger Games series by Suzanne Collins
 * Maze Runner series by James Dashner
 * Divergent series by Veronica Roth (I couldn't even bear finishing this series)
 
 ## Key Results ##
-![hp7_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/1879984733-hp7_bychapter.png)
+![hp1_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/1442896934-hp1_bychapter.png)
+![hp2_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/2211721534-hp2_bychapter.png)
+![hp3_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3349945148-hp3_bychapter.png)
+![hp4_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/2037694172-hp4_bychapter.png)
+![hp5_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/2320447020-hp5_bychapter.png)
+![hp6_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3254033752-hp6_bychapter.png)
+![hp7_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3641079957-hp7_bychapter.png)
 
+![brotherband1.png](https://bitbucket.org/repo/Mx7pKn/images/3728856753-brotherband1.png)
+![brotherband2.png](https://bitbucket.org/repo/Mx7pKn/images/1715254307-brotherband2.png)
+![brotherband3.png](https://bitbucket.org/repo/Mx7pKn/images/4144328460-brotherband3.png)
+
+![beyonders1.png](https://bitbucket.org/repo/Mx7pKn/images/1102671954-beyonders1.png)
+![beyonders2.png](https://bitbucket.org/repo/Mx7pKn/images/3087977819-beyonders2.png)
+![beyonders3.png](https://bitbucket.org/repo/Mx7pKn/images/58032596-beyonders3.png)
+
+![hungergames1.png](https://bitbucket.org/repo/Mx7pKn/images/3362662986-hungergames1.png)
+![hungergames2.png](https://bitbucket.org/repo/Mx7pKn/images/205217570-hungergames2.png)
 ![hungergames3.png](https://bitbucket.org/repo/Mx7pKn/images/848505291-hungergames3.png)
+
+![mazerunner1.png](https://bitbucket.org/repo/Mx7pKn/images/1411760702-mazerunner1.png)
+![mazerunner2.png](https://bitbucket.org/repo/Mx7pKn/images/3450592742-mazerunner2.png)
+![mazerunner3.png](https://bitbucket.org/repo/Mx7pKn/images/2984717330-mazerunner3.png)
+
+![divergent1.png](https://bitbucket.org/repo/Mx7pKn/images/2224003594-divergent1.png)
+![divergent2.png](https://bitbucket.org/repo/Mx7pKn/images/765769502-divergent2.png)
+![divergent3.png](https://bitbucket.org/repo/Mx7pKn/images/2637047517-divergent3.png)
 
 ## Conclusions ##
 The preliminary results show that 
@@ -43,6 +66,8 @@ The preliminary results show that
 ## Assumptions ##
 
 * When creating the character lists, I deleted last names and prefaces such as "Professor" to avoid double counting. The assumption here is that characters are usually referred to by one name more than the other.  This also helps to avoid confusion over shared family names.
+* There is some error in creating the list of characters in a series. I ignored characters that were only mentioned < 5 times. 
+* There is a subtle assumption that chapter lengths are more or less similar across a particular book, or across different series. I describe this assumption as "subtle" only because I am *comparing* different series. 
 
 ## Future Work ##
 
