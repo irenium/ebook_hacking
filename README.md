@@ -8,10 +8,12 @@ Quantifying patterns in stories, including character breadth versus character de
 
 ## Methodology ##
 
-I used Python to extract data from several electronic books (epubs) within the broad category of "young adult fiction." I chose to focus on character patterns, and refined my approach as I continued to explore the results.
+I used Python to extract data from several electronic books (epubs) within the broad category of "young adult fiction." I chose to focus on character patterns throughout a story, and refined my approach as I explored the data.
 
 ### Initial Approach ###
-I started to explore the data by first looking at the Harry Potter series. This choice was driven by the online availability of a full character list for these books.
+I started analyzing the Harry Potter series first. This choice was driven by the online availability of a full character list for these books. I began by using the Natural Language Toolkit (NLTK) library to convert epubs into lists of strings (i.e., tokens). In this way, you are able to search for tokens like "Harry" or "Ron" and then count the number of times these characters are mentioned throughout the novel. Below is a snapshot of some of this data. It's very obvious that Harry is mentioned quite a number of times throughout book 1. At this point, the data isn't really telling me anything that I didn't already know.
+
+![hpbook1_names.png](https://bitbucket.org/repo/Mx7pKn/images/2946209153-hpbook1_names.png)
 
 Next, I looked at how frequently characters were mentioned over an entire book, and what the distribution of "main" characters vs "minor" characters was. The plot below compares the first book in the Harry Potter series (top graph) to the last book in the series (bottom graph). As you can see, the series starts out with an obvious protagonist (Harry). He is mentioned over 1000 times in book 1. The top plot also shows that there are nearly 10 "minor" characters which are mentioned between 100-200x throughout the novel. By book 7, the number of characters mentioned in the book has grown by quite a lot. Harry is no longer the only character mentioned over 1000 times. In fact, there are a couple characters mentioned over 550 times, and nearly 25 "minor" characters who are mentioned only 100-150x. 
 
@@ -21,9 +23,13 @@ Compare how the Harry Potter series progresses to the Maze Runner series. As sho
 
 ![mazerunner1_3subplots.png](https://bitbucket.org/repo/Mx7pKn/images/625874408-mazerunner1_3subplots.png)
 
+Already, the data is starting to reveal how character breadth and depth varies for different novels. Next, I wanted to explore this concept over the progression of a novel and over the progression of a series.
+
 ### Final Approach ###
 
-Before I looked at the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
+In order to understand character depth and character breadth in a given series of books, I refined my initial approach so that we could look at the number of characters in each chapter throughout a series. I already showed how different a Harry Potter book looks compared to a novel from the Maze Runner series. These last several plots show how character depth and breadth varies throughout different series, all written by different authors.
+
+Before I looked at the data from the remaining epubs, I made a lit of the books which I planned to analyze. Then I ranked them in order of how much I liked that book. In order of my most to least favorite:
 
 * Harry Potter series by J.K. Rowling
 * Brotherband chronicles by John Flanagan tied with the Beyonders series by Brandon Mull
@@ -31,7 +37,10 @@ Before I looked at the remaining epubs, I made a lit of the books which I planne
 * Maze Runner series by James Dashner
 * Divergent series by Veronica Roth (I couldn't even bear finishing this series)
 
+Notably, for each series, I tried to use the NLTK library to tag all proper pronouns in a given book, in an attempt to extract a list of all characters in the book (after all, I don't remember all the minor characters from books that I read 5 years ago). I found out that the library was unable to successfully tag all of the proper pronouns. I did not expect the code to be able to distinguish between places and names ("Hogwarts" and "Harry" are both proper pronouns). I was disappointed to find that the code was tagging random words like "Please" and "Unless" which are definitely not proper pronouns. I attempted to also filter out tagged words which occurred less than 4 times. This assumes that characters who are only mentioned 3 times are insignificant to the story (i.e., I do not even consider them to be minor characters). In the end, I had to do a lot of manual editing. I sorted the output by frequency of occurrence, and deleted words from the bottom of the list which were clearly not names. For all words that I was unsure of, I looked each up online to figure out if it was actually a character or not. For instance "Felrook" from the Beyonders series is a location, not a person (and I could not remember this).
+
 ## Key Results ##
+
 ![hp1_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/1442896934-hp1_bychapter.png)
 ![hp2_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/2211721534-hp2_bychapter.png)
 ![hp3_bychapter.png](https://bitbucket.org/repo/Mx7pKn/images/3349945148-hp3_bychapter.png)
