@@ -18,7 +18,7 @@ Next, I looked at how frequently characters were mentioned over an entire book, 
 
 ![hp1_7subplot.png](https://bitbucket.org/repo/Mx7pKn/images/2061119558-hp1_7subplot.png)
 
-Compare how the Harry Potter series progresses to the Maze Runner series by James Dashner. As shown in the plot below, there is a main character that is mentioned over 1000 times throughout the novels. The number of main characters in this series actually shrinks as the series progresses. Unlike the Harry Potter series, where minor characters are increasingly developed into main characters, the Maze Runner series focuses on the protagonist alone and does not provide character depth to anyone else in the book. 
+Compare how the Harry Potter series progresses to the Maze Runner series by James Dashner. As shown in the plot below, there is a main character that is mentioned over 1000 times throughout the novels. The number of main characters in this series actually shrinks as the series progresses. Unlike the Harry Potter series, where minor characters are increasingly developed into main characters, the Maze Runner series focuses on the protagonist. 
 
 ![mazerunner1_3subplots.png](https://bitbucket.org/repo/Mx7pKn/images/625874408-mazerunner1_3subplots.png)
 
